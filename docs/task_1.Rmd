@@ -1,0 +1,37 @@
+---
+title: "runoff_volumes"
+author: "Kimberlee Wong"
+date: "2024-08-16"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# setup
+```{r}
+library(tidyverse)
+library(here)
+```
+
+# source
+```{r}
+source(here::here("src", "storm_runoff.R"))
+```
+
+# testing function
+```{r}
+Ia_range <- seq(0.6, 0.8, 0.01)
+runoff_values <- predict_runoff(Ia_range, 182)
+volume_df <- data.frame(runoff_values, Ia_range)
+```
+
+# plot it
+```{r}
+ggplot(volume_df, aes(x = Ia_range, y = runoff_values)) +
+  geom_point() +
+  geom_line() +
+  labs(title = "Impervious range and its resulting runoff values", x = "impervious fraction", "runoff volume")
+
+ggsave(here::here("figs", "storm_runoff.png"), height = 6, width = 5)
+```
+
+
